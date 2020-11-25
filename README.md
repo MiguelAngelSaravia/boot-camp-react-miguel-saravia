@@ -4,7 +4,7 @@ This project is working with Node Version 14.15.1 [](https://nodejs.org/en/downl
 
 ## How to install
 
-yarn install
+yarn install [tap here for see how to install yarn](https://classic.yarnpkg.com/en/docs/install/#mac-stable)
 
 ### `yarn start`
 
