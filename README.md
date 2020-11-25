@@ -47,9 +47,9 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ### Axios for request Api
 
-Axios repo and how to install: [Doc](https://github.com/axios/axios)
+Axios repo and how to install: [Axios documentation and install](https://github.com/axios/axios)
 
 ### Material UI for front-end
 
-How to use it, and how to install it: [Doc](https://material-ui.com/)
+How to use it, and how to install it: [Material UI Documentation and install](https://material-ui.com/)
 
