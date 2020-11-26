@@ -19,6 +19,9 @@ function App() {
                 <Route exact path="/favorites" >
                     <Favorites />
                 </Route>
+                <Route exact path="/home/:id" >
+                    <Favorites />
+                </Route>
                 <Route exact path="*">
                     <NotFoundPage />
                 </Route>

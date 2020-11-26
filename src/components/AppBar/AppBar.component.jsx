@@ -7,7 +7,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import Modal from '@material-ui/core/Modal';
 
 import { useStyles } from '../../utils/styles';
 import RenderMenu from '../MenuProfile';

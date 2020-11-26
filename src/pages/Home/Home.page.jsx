@@ -12,7 +12,7 @@ function Home() {
     return (
         <div>
             <AppHeader value={value.search} onCriteria={criteriaFetch}/>
-            {/* <CardContent query = {value.search}/> */}
+            <CardContent query = {value.search}/>
         </div>
     )
 }

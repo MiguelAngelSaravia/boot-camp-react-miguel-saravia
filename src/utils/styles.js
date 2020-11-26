@@ -100,4 +100,9 @@ export const useStyles = makeStyles((theme) => ({
       borderRadius: '20px',
       padding: theme.spacing(2, 4, 3),
     },
+    favoritesContainer: {
+      marginTop: '5px',
+      flex: 1,
+      margin: 'auto',
+    },
   }));

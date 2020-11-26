@@ -9,6 +9,7 @@ import { useStyles } from '../../utils/styles';
 function CardContent({query}) {
     const { youtubeList, loading } = useApi(query);
     const classes = useStyles()
+    const currentList = youtubeList;
 
     if(loading) return <div>Loading...</div>
     
@@ -21,7 +22,7 @@ function CardContent({query}) {
                 {youtubeList.map((list, i) => {
                     return (
                         <Grid item xs key={i}>
-                            <CustomCard list={list}/>
+                            <CustomCard list={list} youtubeList = {currentList}/>
                         </Grid>
                     )
                 })}
