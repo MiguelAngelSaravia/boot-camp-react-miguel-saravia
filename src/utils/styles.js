@@ -1,3 +1,4 @@
+import { green } from '@material-ui/core/colors';
 import { fade, makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme) => ({
@@ -94,7 +95,6 @@ export const useStyles = makeStyles((theme) => ({
       position: 'absolute',
       top:'40%',
       left:'35%',
-      // width: '50',
       height: '20vh',
       backgroundColor: 'white',
       borderRadius: '20px',
@@ -105,4 +105,9 @@ export const useStyles = makeStyles((theme) => ({
       flex: 1,
       margin: 'auto',
     },
+    customSwitch: {
+      'MuiSwitch-colorPrimary': {
+        color: green,
+      }
+    }
   }));

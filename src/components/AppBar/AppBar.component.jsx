@@ -7,6 +7,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+
 
 import { useStyles } from '../../utils/styles';
 import RenderMenu from '../MenuProfile';
@@ -23,6 +26,12 @@ function CustomAppBar(props) {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const [switchSatus, setSwitchSatus] = useState({status: false});
+
+  const handleChange = (event) => {
+    setSwitchSatus({ ...switchSatus, [event.target.name]: event.target.checked });
+  };
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -106,6 +115,17 @@ function CustomAppBar(props) {
             />
           </div>
           <div className={classes.grow} />
+          <FormControlLabel
+            control={
+              <Switch className={classes.customSwitch}
+                checked={switchSatus.status}
+                onChange={(e) => handleChange(e)}
+                name='status'
+                color='default'
+              />
+            }
+            label="Dark Mode"
+          />
           <div className={classes.sectionDesktop}>
             <IconButton
               edge="end"
@@ -118,6 +138,7 @@ function CustomAppBar(props) {
               <AccountCircle />
             </IconButton>
           </div>
+
           <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"
