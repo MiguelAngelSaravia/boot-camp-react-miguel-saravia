@@ -1,4 +1,6 @@
-import React, {useContext, useCallback, useEffect, useState, createContext} from 'react';
+import React, {useContext, useCallback, useState, createContext} from 'react';
+
+import { AUTH_STORAGE_PROFILE, AUTH_STORAGE_AUTH } from '../../utils/constants';
 
 const AuthContext = createContext({
     login: () => {},
@@ -17,14 +19,19 @@ function useAuth() {
 }
 
 function AuthProvider({children}) {
+
     const [authenticated, setAuthenticated] = useState()
 
-    const login = useCallback( () => {
+    const login = useCallback( (profile) => {
         setAuthenticated(true)
+        localStorage.setItem(AUTH_STORAGE_PROFILE, JSON.stringify(profile));
+        localStorage.setItem(AUTH_STORAGE_AUTH, authenticated);
     }, [])
 
     const logout = useCallback(() => {
         setAuthenticated(false)
+        localStorage.removeItem(AUTH_STORAGE_PROFILE);
+        localStorage.setItem(AUTH_STORAGE_AUTH, authenticated);
     }, [])
 
     return (

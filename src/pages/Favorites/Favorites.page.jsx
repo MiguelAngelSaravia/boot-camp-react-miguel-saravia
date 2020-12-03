@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 import AppHeader from '../../components/AppBar';
 
 
 function Favorites() {
-    const [value, setValue] = useState({search: 'wizeline'});
+    // const [value, setValue] = useState({search: 'wizeline'});
 
     return (
         <div>

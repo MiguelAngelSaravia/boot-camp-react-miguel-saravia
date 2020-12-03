@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -9,12 +9,12 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import Avatar from '@material-ui/core/Avatar';
 
-
-import { useStyles } from '../../utils/styles';
 import RenderMenu from '../MenuProfile';
 import DrawerMenu from '../DrawerMenu';
-
+import { useStyles } from '../../utils/styles';
+import { AUTH_STORAGE_AUTH, AUTH_STORAGE_PROFILE } from '../../utils/constants'; 
 
 function CustomAppBar(props) {
   const classes = useStyles();
@@ -23,6 +23,9 @@ function CustomAppBar(props) {
   const [openDrawer, setOpenDrower] = useState({open: false})
   const [searchValue, setSearchValue] = useState({criteria: props.value})
   const [openModal, setOpenModal] = useState(false);
+
+  const isLogin = JSON.parse(localStorage.getItem(AUTH_STORAGE_AUTH));
+  const authProfile = JSON.parse(localStorage.getItem(AUTH_STORAGE_PROFILE));
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -85,6 +88,10 @@ function CustomAppBar(props) {
     <RenderMenu menuId={mobileMenuId} anchorEl={mobileMoreAnchorEl} closeBtn={handleMobileMenuClose} openMenu={isMobileMenuOpen} handleClick={handleProfileMenuOpen} />
   );
 
+  useEffect(() => {
+    console.log('loading', isLogin, authProfile);
+  }, [])
+
   return (
     <div className={classes.grow}>
       <AppBar position="static">
@@ -127,16 +134,33 @@ function CustomAppBar(props) {
             label="Dark Mode"
           />
           <div className={classes.sectionDesktop}>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+              {isLogin === true ? (
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+              <Avatar
+                key={authProfile.id}
+                alt={authProfile.name}
+                src={authProfile.avatarUrl}
+              />
+              </IconButton>
+              ) : (
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              )}
           </div>
 
           <div className={classes.sectionMobile}>
