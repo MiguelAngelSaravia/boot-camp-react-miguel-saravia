@@ -14,7 +14,6 @@ function FavoritesCard(props) {
   const {title, description, image, id} = props.list
 
   const handleCard = () => {
-    console.log('card value', id);
     history.push(`/home/${id}`, {list: props.list, youtubelist: props.youtubeList});
   }
 
