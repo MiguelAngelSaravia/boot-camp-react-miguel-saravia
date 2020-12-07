@@ -7,22 +7,17 @@ import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { useHistory } from 'react-router';
 
-import ServiceLogin from '../../mockLogin/Login.api'
 import { useStyles } from '../../utils/styles';
-import {useAuth} from '../../providers/Auth';
 import {storage} from '../../utils/storage';
 import {AUTH_STORAGE_KEY} from '../../utils/constants';
 
-
 function MenuProfile(props) {
   const classes = useStyles();
-  const { login} = useAuth();
   const isLogin = storage.get(AUTH_STORAGE_KEY);
-  const history = useHistory();
   const [userValue, setUserValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
+
 
   const handleUser = (e) => {
     setUserValue(e.target.value);
@@ -31,20 +26,14 @@ function MenuProfile(props) {
   const handlePassword = (e) => {
     setPasswordValue(e.target.value);
   }
-  const submitForm = (event) => {
-    event.preventDefault();
-    ServiceLogin(userValue, passwordValue).then(((resp) => {
-        login(resp);
-        history.push('/');
-    })).catch((e) => {
-        console.log('error del mockup', e);
-    });
+  const submitForm = () => {
+    props.handleLogin(userValue, passwordValue);
 }
 
   const loginBody = (
     <div className={classes.paper}>
     <h1>Login</h1>
-      <form onSubmit={submitForm}>
+      <form >
           <Grid container spacing={3}>
             <Grid item xs={6}>
              <TextField required id="standard-required-username" label="Username" type='text' value={userValue} onChange={(e) => handleUser(e)} autoComplete='off' />  
@@ -60,7 +49,7 @@ function MenuProfile(props) {
             </Grid>
             <Grid item xs={6}>
               <Button onClick={props.handleClose}>Cancel</Button>
-              <Button type='submit' color="primary">Login</Button>
+              <Button onClick={submitForm} color="primary">Login</Button>
             </Grid>
           </Grid>
       </form>
