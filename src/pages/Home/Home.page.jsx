@@ -8,7 +8,6 @@ function Home() {
     const criteriaFetch = (resp) => {
         setValue({...value, search: resp});
     }
-    
     return (
         <div>
             <AppHeader value={value.search} onCriteria={criteriaFetch}/>

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -14,18 +14,23 @@ import Avatar from '@material-ui/core/Avatar';
 import RenderMenu from '../MenuProfile';
 import DrawerMenu from '../DrawerMenu';
 import { useStyles } from '../../utils/styles';
-import { AUTH_STORAGE_AUTH, AUTH_STORAGE_PROFILE } from '../../utils/constants'; 
+import { AUTH_STORAGE_KEY, AUTH_STORAGE_PROFILE } from '../../utils/constants';
+import {storage} from '../../utils/storage';
+import {useAuth} from '../../providers/Auth';
+
 
 function CustomAppBar(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const { logout } = useAuth();
+
   const [openDrawer, setOpenDrower] = useState({open: false})
   const [searchValue, setSearchValue] = useState({criteria: props.value})
   const [openModal, setOpenModal] = useState(false);
 
-  const isLogin = JSON.parse(localStorage.getItem(AUTH_STORAGE_AUTH));
-  const authProfile = JSON.parse(localStorage.getItem(AUTH_STORAGE_PROFILE));
+  const isLogin = JSON.parse(storage.get(AUTH_STORAGE_KEY));
+  const authProfile = storage.get(AUTH_STORAGE_PROFILE);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -42,7 +47,11 @@ function CustomAppBar(props) {
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
-    handleOpen();
+    if(!isLogin){
+      handleOpen();
+    } else {
+      handleClose();
+    }
   };
 
   const handleMenuClose = () => {
@@ -62,13 +71,17 @@ function CustomAppBar(props) {
   };
 
   const handleOpen = () => {
-    console.log('menu modal');
     setOpenModal(true);
   };
 
   const handleClose = () => {
     setOpenModal(false);
   };
+
+  const handleLogout = () => {
+    handleMenuClose();
+    logout();
+  }
 
   const searchCriteria = (event) => {
     if(event.type === 'keydown' && event.keyCode === 13) {
@@ -80,17 +93,13 @@ function CustomAppBar(props) {
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
-    <RenderMenu menuId={menuId} anchorEl={anchorEl} closeBtn = {handleMenuClose} openMenu = {isMenuOpen} openModal={openModal} handleClose={handleClose} />
+    <RenderMenu menuId={menuId} anchorEl={anchorEl} closeBtn = {handleMenuClose} openMenu = {isMenuOpen} openModal={openModal} handleClose={handleClose} handleLogout={handleLogout} />
   );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
-    <RenderMenu menuId={mobileMenuId} anchorEl={mobileMoreAnchorEl} closeBtn={handleMobileMenuClose} openMenu={isMobileMenuOpen} handleClick={handleProfileMenuOpen} />
+    <RenderMenu menuId={mobileMenuId} anchorEl={mobileMoreAnchorEl} closeBtn={handleMobileMenuClose} openMenu={isMobileMenuOpen} handleClick={handleProfileMenuOpen} handleLogout={handleLogout} />
   );
-
-  useEffect(() => {
-    console.log('loading', isLogin, authProfile);
-  }, [])
 
   return (
     <div className={classes.grow}>

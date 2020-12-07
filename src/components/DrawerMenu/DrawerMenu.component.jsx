@@ -10,11 +10,14 @@ import HomeIcon from '@material-ui/icons/Home';
 import Drawer from '@material-ui/core/Drawer';
 
 import { useStyles } from '../../utils/styles';
+import {storage} from '../../utils/storage';
+import {AUTH_STORAGE_KEY} from '../../utils/constants';
 
 
 function DrawerMenu(props) {
     const currentAnchor = 'left';
     const classes = useStyles();
+    const isLogin = storage.get(AUTH_STORAGE_KEY);
 
     const list = (anchor) => (
         <div
@@ -25,8 +28,10 @@ function DrawerMenu(props) {
           onClick={props.toggleDrawer(false)}
           onKeyDown={props.toggleDrawer(false)}
         >
+        {isLogin === true ? (
+          <>
           <List>
-              <ListItem button component="a" href="/home" key='Home'>
+              <ListItem button component="a" href="/" key='Home'>
                 <ListItemIcon>
                     <HomeIcon />
                 </ListItemIcon>
@@ -43,6 +48,21 @@ function DrawerMenu(props) {
                 <ListItemText primary='Favorites' />
               </ListItem>
           </List>
+          </>
+        ):(
+          <>
+          <List>
+              <ListItem button component="a" href="/" key='Home'>
+                <ListItemIcon>
+                    <HomeIcon />
+                </ListItemIcon>
+                <ListItemText primary='Home' />
+              </ListItem>
+
+          </List>
+          <Divider />
+          </>
+        )}
         </div>
       );
 

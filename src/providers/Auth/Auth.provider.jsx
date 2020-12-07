@@ -1,44 +1,44 @@
-import React, {useContext, useCallback, useState, createContext} from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 
-import { AUTH_STORAGE_PROFILE, AUTH_STORAGE_AUTH } from '../../utils/constants';
-
-const AuthContext = createContext({
-    login: () => {},
-    logout: () => {},
-    authenticated: false
-});
+import { AUTH_STORAGE_KEY, AUTH_STORAGE_PROFILE} from '../../utils/constants';
+import {AuthContext} from '../Context/AuthContext';
+import {storage} from '../../utils/storage';
 
 function useAuth() {
-    const context = useContext(AuthContext);
-
-    if(!context) {
-        throw new Error(`Can't use "useAuth" without and AuthProvider`);
-    }
-
-    return context;
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error(`Can't use "useAuth" without an AuthProvider!`);
+  }
+  return context;
 }
 
-function AuthProvider({children}) {
+function AuthProvider({ children }) {
+  const [authenticated, setAuthenticated] = useState(false);
 
-    const [authenticated, setAuthenticated] = useState()
+  useEffect(() => {
+    const lastAuthState = storage.get(AUTH_STORAGE_KEY);
+    const isAuthenticated = Boolean(lastAuthState);
 
-    const login = useCallback( (profile) => {
-        setAuthenticated(true)
-        localStorage.setItem(AUTH_STORAGE_PROFILE, JSON.stringify(profile));
-        localStorage.setItem(AUTH_STORAGE_AUTH, authenticated);
-    }, [])
+    setAuthenticated(isAuthenticated);
+  }, []);
 
-    const logout = useCallback(() => {
-        setAuthenticated(false)
-        localStorage.removeItem(AUTH_STORAGE_PROFILE);
-        localStorage.setItem(AUTH_STORAGE_AUTH, authenticated);
-    }, [])
+  const login = useCallback((profile) => {
+    setAuthenticated(true);
+    storage.set(AUTH_STORAGE_PROFILE, profile);
+    storage.set(AUTH_STORAGE_KEY, true);
+  }, []);
 
-    return (
-        <AuthContext.Provider value={{login, logout, authenticated}}>
-            {children}
-        </AuthContext.Provider>
-    )
+  const logout = useCallback(() => {
+    setAuthenticated(false);
+    storage.delete(AUTH_STORAGE_PROFILE);
+    storage.set(AUTH_STORAGE_KEY, false);
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ login, logout, authenticated}}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export { useAuth };
