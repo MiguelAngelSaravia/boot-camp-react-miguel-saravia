@@ -16,7 +16,7 @@ function App() {
                     <Route exact path="/" component={HomePage} />
                     <Route exact path="/home/:id" component={VideoDetailsView} />
                     <Private>
-                      <Route exact path="/favorites" component={Favorites} />
+                      <Route path="/favorites/" component={Favorites} />
                     </Private>
                     <Route exact path="*" component={NotFoundPage} />
                 </Switch>

@@ -45,7 +45,7 @@ function VideoId() {
     }
 
     const updateCurrentList = () => {
-        setUpdateList(storage.get(AUTH_FAVORITES_LIST));
+        setUpdateList(storage.get(AUTH_FAVORITES_LIST) || []);
     }
 
     useEffect(()=> {

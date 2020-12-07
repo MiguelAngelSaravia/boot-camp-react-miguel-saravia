@@ -41,7 +41,7 @@ function DrawerMenu(props) {
           </List>
           <Divider />
           <List>
-              <ListItem button component="a" href="/favorites" key='Favorites'>
+              <ListItem button component="a" href="/favorites/" key='Favorites'>
                 <ListItemIcon>
                     <MusicNoteIcon />
                 </ListItemIcon>
