@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 
-import { AUTH_STORAGE_KEY, AUTH_STORAGE_PROFILE} from '../../utils/constants';
-import {AuthContext} from '../Context/AuthContext';
+import { AUTH_STORAGE_KEY, AUTH_STORAGE_PROFILE, VIDEO_LIST_DETAIL} from '../../utils/constants';
+import {AuthContext, VideoInfoContext} from '../Context/AuthContext';
+
 import {storage} from '../../utils/storage';
 
 function useAuth() {
@@ -12,8 +13,17 @@ function useAuth() {
   return context;
 }
 
+function useVideInfo() {
+  const context = useContext(VideoInfoContext);
+  if (!context) {
+    throw new Error(`Can't use "useAuth" without an AuthProvider!`);
+  }
+  return context;
+}
+
 function AuthProvider({ children }) {
   const [authenticated, setAuthenticated] = useState(false);
+  const [infoList, setInfoList] = useState({});
 
   useEffect(() => {
     const lastAuthState = storage.get(AUTH_STORAGE_KEY);
@@ -34,12 +44,19 @@ function AuthProvider({ children }) {
     storage.set(AUTH_STORAGE_KEY, false);
   }, []);
 
+  const updateInfoList = useCallback((data) => {
+    setInfoList({...infoList, data});
+    storage.set(VIDEO_LIST_DETAIL, data);
+  }, [])
+
   return (
     <AuthContext.Provider value={{ login, logout, authenticated}}>
-      {children}
+      <VideoInfoContext.Provider value={{updateInfoList}} >
+        {children}
+      </VideoInfoContext.Provider>
     </AuthContext.Provider>
   );
 }
 
-export { useAuth };
+export { useAuth, useVideInfo };
 export default AuthProvider;

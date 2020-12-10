@@ -1,1 +1,1 @@
-export {default, useAuth } from './Auth.provider';
+export {default, useAuth, useVideInfo} from './Auth.provider';

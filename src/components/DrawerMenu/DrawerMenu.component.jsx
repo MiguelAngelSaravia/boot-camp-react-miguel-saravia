@@ -31,7 +31,7 @@ function DrawerMenu(props) {
         {isLogin === true ? (
           <>
           <List>
-              <ListItem button component="a" href="/" key='Home'>
+              <ListItem button component="a" href="#/" key='Home'>
                 <ListItemIcon>
                     <HomeIcon />
                 </ListItemIcon>
@@ -41,7 +41,7 @@ function DrawerMenu(props) {
           </List>
           <Divider />
           <List>
-              <ListItem button component="a" href="/favorites/" key='Favorites'>
+              <ListItem button component="a" href="#/favorites" key='Favorites'>
                 <ListItemIcon>
                     <MusicNoteIcon />
                 </ListItemIcon>

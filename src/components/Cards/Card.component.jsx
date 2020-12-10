@@ -7,14 +7,33 @@ import Typography from '@material-ui/core/Typography';
 import { useHistory } from "react-router-dom";
 
 import { useStyles } from '../../utils/styles';
+import { useVideInfo } from '../../providers/Auth';
+
 
 function CustomCard(props) {
-  const history = useHistory()
+  const history = useHistory();
   const classes = useStyles();
-  const {snippet, id} = props.list
+  const {snippet, id} = props.list;
+  const {updateInfoList} = useVideInfo();
+  const currentData = props.list !== undefined ? props.list : {};
 
   const handleCard = () => {
-    history.push(`/home/${id.videoId}`, {list: props.list, youtubelist: props.youtubeList});
+    const videoInfo = {
+      description: currentData.snippet.description,
+      id: id.videoId,
+      image: currentData.snippet.thumbnails.high.url,
+      publishTine: currentData.snippet.publishTime,
+      title: currentData.snippet.title,
+    }
+    const data = {
+      videoInfo, youtubelist: props.youtubeList
+    }
+    updateInfoList(data)
+    history.push({
+      pathname: `/home/${id.videoId}`,
+      search: '',
+      state: ''
+    });
   }
 
   return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter , Switch, Route } from 'react-router-dom';
+import { BrowserRouter , Switch, Route, HashRouter } from 'react-router-dom';
 
 import AuthProvider from '../../providers/Auth';
 import Private from '../Private/';
@@ -10,18 +10,18 @@ import VideoDetailsView from '../../pages/VideoDetailsView';
 
 function App() {
     return (
-        <BrowserRouter>
+        <HashRouter>
             <AuthProvider>
                 <Switch>
                     <Route exact path="/" component={HomePage} />
                     <Route exact path="/home/:id" component={VideoDetailsView} />
                     <Private>
-                      <Route path="/favorites/" component={Favorites} />
+                      <Route exact path="/favorites" component={Favorites} />
                     </Private>
-                    <Route exact path="*" component={NotFoundPage} />
+                    {/* <Route exact path="*" component={NotFoundPage} /> */}
                 </Switch>
             </AuthProvider>
-        </BrowserRouter>
+        </HashRouter>
     )
 }
 export default App;
