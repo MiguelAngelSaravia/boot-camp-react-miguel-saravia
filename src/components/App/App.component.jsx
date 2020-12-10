@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter , Switch, Route, HashRouter } from 'react-router-dom';
+import { Switch, Route, HashRouter } from 'react-router-dom';
 
 import AuthProvider from '../../providers/Auth';
 import Private from '../Private/';
@@ -18,7 +18,7 @@ function App() {
                     <Private>
                       <Route exact path="/favorites" component={Favorites} />
                     </Private>
-                    {/* <Route exact path="*" component={NotFoundPage} /> */}
+                    <Route exact path="*" component={NotFoundPage} />
                 </Switch>
             </AuthProvider>
         </HashRouter>

@@ -47,7 +47,7 @@ function AuthProvider({ children }) {
   const updateInfoList = useCallback((data) => {
     setInfoList({...infoList, data});
     storage.set(VIDEO_LIST_DETAIL, data);
-  }, [])
+  }, [infoList]);
 
   return (
     <AuthContext.Provider value={{ login, logout, authenticated}}>

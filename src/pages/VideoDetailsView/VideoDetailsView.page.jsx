@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
-import { useParams, useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Button } from '@material-ui/core';
 
 import AppHeader from '../../components/AppBar';
@@ -8,14 +8,15 @@ import CustomCard from '../../components/Cards'
 import { useStyles } from '../../utils/styles';
 import {storage} from '../../utils/storage';
 import { AUTH_STORAGE_KEY, AUTH_FAVORITES_LIST, VIDEO_LIST_DETAIL} from '../../utils/constants';
+import {useAuth} from '../../providers/Auth';
 
 function VideoId() {
     const classes = useStyles();
     const { id } = useParams();
+    const {authenticated} = useAuth();
     const [addList, setList] = useState({});
     const [value, setValue] = useState({search: 'wizeline'});
     const [updateList, setUpdateList] = useState([]);
-    const isLogin = storage.get(AUTH_STORAGE_KEY);
     const currentDataInfo = storage.get(VIDEO_LIST_DETAIL) || [{}];
     let removeItem = [];
     let findIndexValue = (element) => element === id;
@@ -50,8 +51,8 @@ function VideoId() {
     }
 
     useEffect(()=> {
-        updateCurrentList()
-    }, [addList, id]);
+        updateCurrentList();
+    }, [addList, id, authenticated]);
 
     return (
         <div>
@@ -69,7 +70,7 @@ function VideoId() {
                     />
 
                     <Grid container spacing={8}>
-                    {isLogin === true ? (
+                    {authenticated === true ? (
                         <>
                         <Grid item xs={9}>
                             <h2>{currentDataInfo.videoInfo.title}</h2>

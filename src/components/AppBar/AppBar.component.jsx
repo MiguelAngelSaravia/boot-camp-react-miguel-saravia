@@ -147,7 +147,7 @@ function CustomAppBar(props) {
             />
           </div>
           <div className={classes.grow} />
-          {/* <FormControlLabel
+          <FormControlLabel
             control={
               <Switch className={classes.customSwitch}
                 checked={switchSatus.status}
@@ -157,7 +157,7 @@ function CustomAppBar(props) {
               />
             }
             label="Dark Mode"
-          /> */}
+          />
           <div className={classes.sectionDesktop}>
               {isLogin === true ? (
               <IconButton
