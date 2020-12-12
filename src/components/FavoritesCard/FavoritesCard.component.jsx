@@ -23,18 +23,17 @@ function FavoritesCard(props) {
       description: props.list.description,
       id: props.list.id,
       image: props.list.image,
-      publishTine: '',
+      publishTime: props.list.publishTime,
       title: props.list.title,
     }
     const data = {
       videoInfo, youtubelist: props.youtubeList, isfavorites: true
     }
-    // storage.delete(VIDEO_LIST_YOUTUBE);
     storage.set(VIDEO_LIST_YOUTUBE, props.youtubeList);
     updateInfoList(data);
     history.push({
       pathname: `/home/${id}`,
-      search: '',
+      search: `?by=${id}`,
       state: ''
     });
   }

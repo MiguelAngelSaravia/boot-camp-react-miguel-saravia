@@ -22,7 +22,7 @@ function CustomCard(props) {
       description: currentData.snippet.description,
       id: id.videoId,
       image: currentData.snippet.thumbnails.high.url,
-      publishTine: currentData.snippet.publishTime,
+      publishTime: currentData.snippet.publishTime,
       title: currentData.snippet.title,
     }
     const data = {

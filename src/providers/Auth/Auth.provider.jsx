@@ -53,17 +53,16 @@ function AuthProvider({ children }) {
           description: resp.snippet.description,
           id: resp.id.videoId,
           image: resp.snippet.thumbnails.high.url,
-          publishTine: resp.snippet.publishTine,
+          publishTime: resp.snippet.publishTime,
           title: resp.snippet.title,
         }
-        list.push(videosList);
+        return list.push(videosList);
       });
       storage.set(VIDEO_LIST_YOUTUBE, list);
       storage.set(VIDEO_SELECTED_BY_ID, data.videoInfo);
     }
     if(data.hasOwnProperty('youtubelist') ){
       if(data.youtubelist.hasOwnProperty('description')){
-        console.log('entro al hasproperty', data.youtubelist);
         storage.set(VIDEO_LIST_YOUTUBE, data.youtubelist);
       }
     }

@@ -9,7 +9,7 @@ function useApiYoutube(props) {
 
     const fetchYoutube = async () => {
         try{
-            const list = await Api.get('', {params: {part: 'snippet', maxResults: '25', q: `${props}`, key: 'AIzaSyBJdRcmRN5lSmBMJsFZVdqcFqv3GIDJsg0'} });
+            const list = await Api.get('', {params: {part: 'snippet', maxResults: '25', q: `${props}`, key: 'AIzaSyDM9O4AhgKFC6XVcvD97oIINPHl_Df7_5A'} });
             setYoutubeList(list.data.items);
             setLoading(false);
         } catch(e) {

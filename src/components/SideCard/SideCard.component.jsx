@@ -1,10 +1,13 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { useHistory } from "react-router-dom";
+
 import { useVideInfo } from '../../providers/Auth';
+import {AUTH_FAVORITES_LIST ,VIDEO_LIST_YOUTUBE} from '../../utils/constants';
+import { storage } from '../../utils/storage';
 
   
   const useStyles = makeStyles((theme) => ({
@@ -84,16 +87,16 @@ import { useVideInfo } from '../../providers/Auth';
 
 function SideCard(props) {
     const classes = useStyles();
-    const images = props.list;
     const history = useHistory();
     const {updateInfoList} = useVideInfo();
+    const [imageList, setImageList] = useState([]);
 
     const handleVideoDetail = (data) => {
       const videoInfo = {
         description: data.description,
         id: data.id,
         image: data.image,
-        publishTine: data.publishTime,
+        publishTime: data.publishTime,
         title: data.title,
       }
       const currentData = {
@@ -106,9 +109,22 @@ function SideCard(props) {
         state: ''
       });
     }
+
+    useEffect(() => {
+      const updateImageList = () => {
+        props.list.map((x) => {
+          if(x.hasOwnProperty('isFavoriteList')){
+            return setImageList(storage.get(AUTH_FAVORITES_LIST || []));
+          }else {
+            return setImageList(storage.get(VIDEO_LIST_YOUTUBE || []));
+          }
+        });
+      }
+      updateImageList();
+    }, [props.list]);
     return (
         <>
-            {images.map((image, i) => {
+            {imageList.map((image, i) => {
                 return(
                     <div className={classes.root} key={i}>
                         <Grid container spacing={1} className={classes.dump}>
