@@ -17,7 +17,10 @@ function Favorites() {
     }
 
     useEffect(() => {
-        setFavoritesList(...favoritesList, storage.get(AUTH_FAVORITES_LIST) || []);
+        const updateValue = () => {
+            setFavoritesList(storage.get(AUTH_FAVORITES_LIST) || []);
+        }
+        updateValue();
     }, [])
 
     return (

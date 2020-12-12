@@ -56,7 +56,7 @@ function AuthProvider({ children }) {
           publishTime: resp.snippet.publishTime,
           title: resp.snippet.title,
         }
-        list.push(videosList);
+        return list.push(videosList);
       });
       storage.set(VIDEO_LIST_YOUTUBE, list);
       storage.set(VIDEO_SELECTED_BY_ID, data.videoInfo);

@@ -87,7 +87,6 @@ import { storage } from '../../utils/storage';
 
 function SideCard(props) {
     const classes = useStyles();
-    const images = props.list;
     const history = useHistory();
     const {updateInfoList} = useVideInfo();
     const [imageList, setImageList] = useState([]);
@@ -111,19 +110,17 @@ function SideCard(props) {
       });
     }
 
-    const updateImageList = () => {
+    useEffect(() => {
+      const updateImageList = () => {
         props.list.map((x) => {
           if(x.hasOwnProperty('isFavoriteList')){
-            setImageList(storage.get(AUTH_FAVORITES_LIST || []));
+            return setImageList(storage.get(AUTH_FAVORITES_LIST || []));
           }else {
-            setImageList(storage.get(VIDEO_LIST_YOUTUBE || []));
+            return setImageList(storage.get(VIDEO_LIST_YOUTUBE || []));
           }
         });
-         
-    }
-
-    useEffect(() => {
-      updateImageList()
+      }
+      updateImageList();
     }, [props.list]);
     return (
         <>

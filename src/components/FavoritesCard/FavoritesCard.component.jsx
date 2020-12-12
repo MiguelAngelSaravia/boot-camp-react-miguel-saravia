@@ -33,7 +33,7 @@ function FavoritesCard(props) {
     updateInfoList(data);
     history.push({
       pathname: `/home/${id}`,
-      search: '',
+      search: `?by=${id}`,
       state: ''
     });
   }
