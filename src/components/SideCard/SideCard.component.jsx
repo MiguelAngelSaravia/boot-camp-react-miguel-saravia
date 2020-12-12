@@ -1,10 +1,13 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { useHistory } from "react-router-dom";
+
 import { useVideInfo } from '../../providers/Auth';
+import {AUTH_FAVORITES_LIST} from '../../utils/constants';
+import { storage } from '../../utils/storage';
 
   
   const useStyles = makeStyles((theme) => ({
@@ -84,7 +87,7 @@ import { useVideInfo } from '../../providers/Auth';
 
 function SideCard(props) {
     const classes = useStyles();
-    const images = props.list;
+    const [imageList, setImageList] = useState([]);
     const history = useHistory();
     const {updateInfoList} = useVideInfo();
 
@@ -106,9 +109,18 @@ function SideCard(props) {
         state: ''
       });
     }
+
+    const updateImageList = () => {
+      setImageList(storage.get(AUTH_FAVORITES_LIST));
+    }
+
+    useEffect(() => {
+      updateImageList()
+      console.log('verificar el estado del sidecard', props.list);
+    }, [props.list]);
     return (
         <>
-            {images.map((image, i) => {
+            {imageList.map((image, i) => {
                 return(
                     <div className={classes.root} key={i}>
                         <Grid container spacing={1} className={classes.dump}>

@@ -17,6 +17,7 @@ function VideoId() {
     const [addList, setList] = useState({});
     const [value, setValue] = useState({search: 'wizeline'});
     const [updateList, setUpdateList] = useState([]);
+    const [youtubelist, setYoutubelist] = useState([]);
     const currentYoutubeList = storage.get(VIDEO_LIST_YOUTUBE) || [];
     const currentVideoDetail = storage.get(VIDEO_SELECTED_BY_ID) || {};
     const currentFavoritesList = storage.get(AUTH_FAVORITES_LIST) || [];
@@ -44,7 +45,6 @@ function VideoId() {
 
     const handleRemoveFavorites = (index) => {
         removeItem = storage.get(AUTH_FAVORITES_LIST) || [{}];
-        console.log('remove item', removeItem, index);
         removeItem.splice(index, 1);
         storage.set(AUTH_FAVORITES_LIST, removeItem);
         setList({...addList});
@@ -52,6 +52,7 @@ function VideoId() {
 
     const updateCurrentList = () => {
         setUpdateList(storage.get(AUTH_FAVORITES_LIST) || []);
+        setYoutubelist(storage.get(VIDEO_LIST_YOUTUBE) || [])
     }
 
     useEffect(()=> {
@@ -94,7 +95,7 @@ function VideoId() {
                         </Grid>
                     </Grid>
                     <Grid item xs={3}>
-                        <SideCard list={currentYoutubeList} />
+                        <SideCard list={youtubelist} />
                     </Grid>
                 </Grid>
             </div>
