@@ -4,11 +4,11 @@ import { useParams } from "react-router-dom";
 import { Button } from '@material-ui/core';
 
 import AppHeader from '../../components/AppBar';
-import CustomCard from '../../components/Cards'
 import { useStyles } from '../../utils/styles';
 import {storage} from '../../utils/storage';
-import { AUTH_STORAGE_KEY, AUTH_FAVORITES_LIST, VIDEO_LIST_DETAIL} from '../../utils/constants';
+import { AUTH_FAVORITES_LIST, VIDEO_LIST_YOUTUBE, VIDEO_SELECTED_BY_ID} from '../../utils/constants';
 import {useAuth} from '../../providers/Auth';
+import SideCard from '../../components/SideCard/SideCard.component';
 
 function VideoId() {
     const classes = useStyles();
@@ -17,8 +17,11 @@ function VideoId() {
     const [addList, setList] = useState({});
     const [value, setValue] = useState({search: 'wizeline'});
     const [updateList, setUpdateList] = useState([]);
-    const currentDataInfo = storage.get(VIDEO_LIST_DETAIL) || [{}];
-    let removeItem = [];
+    const currentYoutubeList = storage.get(VIDEO_LIST_YOUTUBE) || [];
+    const currentVideoDetail = storage.get(VIDEO_SELECTED_BY_ID) || {};
+    const currentFavoritesList = storage.get(AUTH_FAVORITES_LIST) || [];
+
+    let removeItem = [{}];
     let findIndexValue = (element) => element === id;
 
     const criteriaFetch = (resp) => {
@@ -40,7 +43,8 @@ function VideoId() {
     }
 
     const handleRemoveFavorites = (index) => {
-        removeItem = storage.get(AUTH_FAVORITES_LIST) || [];
+        removeItem = storage.get(AUTH_FAVORITES_LIST) || [{}];
+        console.log('remove item', removeItem, index);
         removeItem.splice(index, 1);
         storage.set(AUTH_FAVORITES_LIST, removeItem);
         setList({...addList});
@@ -57,65 +61,43 @@ function VideoId() {
     return (
         <div>
             <AppHeader value={value.search} onCriteria={criteriaFetch}/>
-            <Grid className={classes.favoritesContainer}  container >
-                <Grid item xs={9}>
-                    <iframe
-                        width="100%"
-                        height="550"
-                        allowFullScreen
-                        frameBorder="0"
-                        title="rick roll"
-                        src={`https://www.youtube.com/embed/${id}?controls=1&autoplay=0`}
-                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                    />
-
-                    <Grid container spacing={8}>
-                    {authenticated === true ? (
-                        <>
-                        <Grid item xs={9}>
-                            <h2>{currentDataInfo.videoInfo.title}</h2>
-                        </Grid>
-                        <Grid item xs={3}>
-                        { updateList.map((x)=>x.id).findIndex(findIndexValue) === -1  ?
-                        (
-                            <>
-                            <Button onClick={() => {handleAddFavorites(currentDataInfo.videoInfo)}}>Add to Favorites</Button>
-                            </>
-                        ) : (
-                            <>
-                            <Button onClick={() => {handleRemoveFavorites(currentDataInfo.youtubelist.map((x)=>x.id).findIndex(findIndexValue))}}>Remove From Favorites</Button>
-                            </>)
-                        }
-                            
-                        </Grid>
-                        </>
-                        ) : (
-                    <>
-                    <Grid item xs={9}>
-                            <h2>{currentDataInfo.videoInfo.title}</h2>
-                    </Grid>
-                    </>
-                    )}
-                    </Grid>
-
-                    <Grid container>
-                        <Grid item xs>
-                            <h4>{currentDataInfo.videoInfo.description}</h4>
+            <div className={classes.rootVideoId}>
+                <Grid container spacing={1}>
+                    <Grid item xs>
+                        <iframe
+                            width="100%"
+                            height="550"
+                            allowFullScreen
+                            frameBorder="0"
+                            title="rick roll"
+                            src={`https://www.youtube.com/embed/${id}?controls=1&autoplay=0`}
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            />
+                        <Grid container>
+                            <Grid item xs>
+                                <span>{currentVideoDetail.description}</span>
+                            </Grid>
+                            {authenticated ? (<>
+                                <Grid item xs={3} style={{display: 'flex', justifyContent:'flex-end'}}>
+                            { updateList.map((x)=>x.id).findIndex(findIndexValue) === -1  ?
+                                (
+                                 <>
+                                    <Button onClick={() => {handleAddFavorites(currentVideoDetail)}}>Add to Favorites</Button>
+                                 </>
+                                ) : (
+                                 <>
+                                    <Button onClick={() => {handleRemoveFavorites(currentFavoritesList.map((x)=>x.id).findIndex(findIndexValue))}}>Remove From Favorites</Button>
+                                 </>
+                                )}
+                            </Grid>
+                            </>) : (<></>)}
                         </Grid>
                     </Grid>
-
+                    <Grid item xs={3}>
+                        <SideCard list={currentYoutubeList} />
+                    </Grid>
                 </Grid>
-                <Grid item xs={3}>
-                {currentDataInfo.youtubelist.map((list, i) => {
-                    return (
-                        <div key={i}>
-                            <CustomCard list={list} youtubeList = {currentDataInfo.youtubelist} />
-                        </div>  
-                    )
-                })}
-                </Grid>
-            </Grid>
-
+            </div>
         </div>
     )
 }

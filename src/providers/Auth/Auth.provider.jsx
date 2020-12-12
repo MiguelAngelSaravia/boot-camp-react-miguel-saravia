@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 
-import { AUTH_STORAGE_KEY, AUTH_STORAGE_PROFILE, VIDEO_LIST_DETAIL} from '../../utils/constants';
+import { AUTH_STORAGE_KEY, AUTH_STORAGE_PROFILE, VIDEO_LIST_YOUTUBE, VIDEO_SELECTED_BY_ID} from '../../utils/constants';
 import {AuthContext, VideoInfoContext} from '../Context/AuthContext';
 
 import {storage} from '../../utils/storage';
@@ -24,7 +24,6 @@ function useVideInfo() {
 function AuthProvider({ children }) {
   const [authenticated, setAuthenticated] = useState(false);
   const [infoList, setInfoList] = useState({});
-
   useEffect(() => {
     const lastAuthState = storage.get(AUTH_STORAGE_KEY);
     const isAuthenticated = Boolean(lastAuthState);
@@ -45,8 +44,30 @@ function AuthProvider({ children }) {
   }, []);
 
   const updateInfoList = useCallback((data) => {
-    setInfoList({...infoList, data});
-    storage.set(VIDEO_LIST_DETAIL, data);
+    let list = [];
+    const currentData = data.videoInfo;
+    setInfoList({...infoList, currentData});
+    if(!data.isfavorites) {
+      data.youtubelist.map((resp) => {
+        const videosList = {
+          description: resp.snippet.description,
+          id: resp.id.videoId,
+          image: resp.snippet.thumbnails.high.url,
+          publishTine: resp.snippet.publishTine,
+          title: resp.snippet.title,
+        }
+        list.push(videosList);
+      });
+      storage.set(VIDEO_LIST_YOUTUBE, list);
+      storage.set(VIDEO_SELECTED_BY_ID, data.videoInfo);
+    }
+    if(data.hasOwnProperty('youtubelist') ){
+      if(data.youtubelist.hasOwnProperty('description')){
+        console.log('entro al hasproperty', data.youtubelist);
+        storage.set(VIDEO_LIST_YOUTUBE, data.youtubelist);
+      }
+    }
+    storage.set(VIDEO_SELECTED_BY_ID, data.videoInfo);
   }, [infoList]);
 
   return (

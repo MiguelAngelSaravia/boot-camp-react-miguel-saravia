@@ -26,9 +26,9 @@ function CustomCard(props) {
       title: currentData.snippet.title,
     }
     const data = {
-      videoInfo, youtubelist: props.youtubeList
+      videoInfo, youtubelist: props.youtubeList, isfavorites: false
     }
-    updateInfoList(data)
+    updateInfoList(data);
     history.push({
       pathname: `/home/${id.videoId}`,
       search: '',

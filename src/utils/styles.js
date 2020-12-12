@@ -7,6 +7,11 @@ export const useStyles = makeStyles((theme) => ({
         marginTop: 30,
         margin: 30
     },
+    rootVideoId:{
+      flex:1,
+      marginTop: 2,
+      margin: 2
+    },
     cardContainer: {
         width: '85%',
         margin: 'auto'

@@ -7,14 +7,36 @@ import Typography from '@material-ui/core/Typography';
 import { useHistory } from "react-router-dom";
 
 import { useStyles } from '../../utils/styles';
+import {useVideInfo} from '../../providers/Auth';
+import { storage } from '../../utils/storage';
+import { VIDEO_LIST_YOUTUBE } from '../../utils/constants';
+
 
 function FavoritesCard(props) {
-  const history = useHistory()
+  const history = useHistory();
   const classes = useStyles();
+  const {updateInfoList} = useVideInfo();
   const {title, description, image, id} = props.list
 
   const handleCard = () => {
-    history.push(`/home/${id}`, {list: props.list, youtubelist: props.youtubeList});
+    const videoInfo = {
+      description: props.list.description,
+      id: props.list.id,
+      image: props.list.image,
+      publishTine: '',
+      title: props.list.title,
+    }
+    const data = {
+      videoInfo, youtubelist: props.youtubeList, isfavorites: true
+    }
+    // storage.delete(VIDEO_LIST_YOUTUBE);
+    storage.set(VIDEO_LIST_YOUTUBE, props.youtubeList);
+    updateInfoList(data);
+    history.push({
+      pathname: `/home/${id}`,
+      search: '',
+      state: ''
+    });
   }
 
   return (
