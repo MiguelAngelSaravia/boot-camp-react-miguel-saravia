@@ -18,7 +18,6 @@ function VideoId() {
     const [value, setValue] = useState({search: 'wizeline'});
     const [updateList, setUpdateList] = useState([]);
     const [youtubelist, setYoutubelist] = useState([]);
-    const currentYoutubeList = storage.get(VIDEO_LIST_YOUTUBE) || [];
     const currentVideoDetail = storage.get(VIDEO_SELECTED_BY_ID) || {};
     const currentFavoritesList = storage.get(AUTH_FAVORITES_LIST) || [];
 
@@ -31,10 +30,11 @@ function VideoId() {
     const handleAddFavorites = (profile) => {
         let add = [];
         const favoriteBody = {
+            isFavoriteList: true,
             description: profile.description,
             id: id,
             image: profile.image,
-            publishTine: profile.publishTine,
+            publishTime: profile.publishTime,
             title: profile.title,
         }
         add = storage.get(AUTH_FAVORITES_LIST) || []

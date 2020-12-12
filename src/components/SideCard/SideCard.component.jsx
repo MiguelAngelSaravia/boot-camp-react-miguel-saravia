@@ -6,7 +6,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import { useHistory } from "react-router-dom";
 
 import { useVideInfo } from '../../providers/Auth';
-import {AUTH_FAVORITES_LIST} from '../../utils/constants';
+import {AUTH_FAVORITES_LIST ,VIDEO_LIST_YOUTUBE} from '../../utils/constants';
 import { storage } from '../../utils/storage';
 
   
@@ -87,16 +87,17 @@ import { storage } from '../../utils/storage';
 
 function SideCard(props) {
     const classes = useStyles();
-    const [imageList, setImageList] = useState([]);
+    const images = props.list;
     const history = useHistory();
     const {updateInfoList} = useVideInfo();
+    const [imageList, setImageList] = useState([]);
 
     const handleVideoDetail = (data) => {
       const videoInfo = {
         description: data.description,
         id: data.id,
         image: data.image,
-        publishTine: data.publishTime,
+        publishTime: data.publishTime,
         title: data.title,
       }
       const currentData = {
@@ -111,12 +112,18 @@ function SideCard(props) {
     }
 
     const updateImageList = () => {
-      setImageList(storage.get(AUTH_FAVORITES_LIST));
+        props.list.map((x) => {
+          if(x.hasOwnProperty('isFavoriteList')){
+            setImageList(storage.get(AUTH_FAVORITES_LIST || []));
+          }else {
+            setImageList(storage.get(VIDEO_LIST_YOUTUBE || []));
+          }
+        });
+         
     }
 
     useEffect(() => {
       updateImageList()
-      console.log('verificar el estado del sidecard', props.list);
     }, [props.list]);
     return (
         <>
