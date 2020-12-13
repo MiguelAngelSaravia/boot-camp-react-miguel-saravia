@@ -1,4 +1,5 @@
 import React from 'react';
+import CustomCard from './Card.component';
 
 describe('CustomCard', () => {
   const onClickSpy = jest.fn();
