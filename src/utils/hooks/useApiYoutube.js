@@ -9,8 +9,14 @@ function useApiYoutube(props) {
 
     const fetchYoutube = async () => {
         try{
-            const list = await Api.get('', {params: {part: 'snippet', maxResults: '25', q: `${props}`, key: 'AIzaSyDM9O4AhgKFC6XVcvD97oIINPHl_Df7_5A'} });
-            setYoutubeList(list.data.items);
+            const list = await Api.get('', {params: {part: 'snippet', maxResults: '25', q: `${props}`, key: 'AIzaSyA_4mxhvsunwJCCEvfrgghVAhrz9yjfAcI'} });
+            const currentList = list.data.items.map((x) => {
+                if(x.id.hasOwnProperty('videoId')) {
+                    return x;
+                }
+                return null;
+            });
+            setYoutubeList(currentList.filter(x=>x));
             setLoading(false);
         } catch(e) {
             setLoading(false);

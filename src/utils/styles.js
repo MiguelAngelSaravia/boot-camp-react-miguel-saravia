@@ -7,6 +7,16 @@ export const useStyles = makeStyles((theme) => ({
         marginTop: 30,
         margin: 30
     },
+    contentCardContainer: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      width: '100%',
+    },
+    loadingContainer: {
+      position: "absolute",
+      left:"50%",
+      top: "50%"
+    },
     rootVideoId:{
       flex:1,
       marginTop: 2,

@@ -74,20 +74,27 @@ function VideoId() {
                             src={`https://www.youtube.com/embed/${id}?controls=1&autoplay=0`}
                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                             />
-                        <Grid container>
-                            <Grid item xs>
-                                <span>{currentVideoDetail.description}</span>
+                        <Grid container style={{marginTop:'2%'}}>
+                            <Grid item xs style={{paddingLeft: 10}}>
+                                <Grid container >
+                                    <Grid item xs={12} style={{display: 'flex', justifyContent:'center'}}>
+                                        <h2>{currentVideoDetail.title}</h2>
+                                    </Grid>
+                                    <Grid item xs>
+                                        <h4>{currentVideoDetail.description}</h4>
+                                    </Grid>
+                                </Grid>
                             </Grid>
                             {authenticated ? (<>
                                 <Grid item xs={3} style={{display: 'flex', justifyContent:'flex-end'}}>
                             { updateList.map((x)=>x.id).findIndex(findIndexValue) === -1  ?
                                 (
                                  <>
-                                    <Button onClick={() => {handleAddFavorites(currentVideoDetail)}}>Add to Favorites</Button>
+                                    <Button onClick={() => {handleAddFavorites(currentVideoDetail)}} style={{color: 'blue', height: '6vh'}}>Add to Favorites</Button>
                                  </>
                                 ) : (
                                  <>
-                                    <Button onClick={() => {handleRemoveFavorites(currentFavoritesList.map((x)=>x.id).findIndex(findIndexValue))}}>Remove From Favorites</Button>
+                                    <Button onClick={() => {handleRemoveFavorites(currentFavoritesList.map((x)=>x.id).findIndex(findIndexValue))}} style={{color: 'red', height: '6vh'}} >Remove From Favorites</Button>
                                  </>
                                 )}
                             </Grid>
