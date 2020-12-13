@@ -1,7 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import {CustomCard} from './Card.component';
-describe('CustomCard', () => {
+describe('custom value', () => {
     it('sums 2 values', () => {
         const num1 = 10
         const num2 = 10
