@@ -11,12 +11,16 @@ import Grid from '@material-ui/core/Grid';
 import { useStyles } from '../../utils/styles';
 import {storage} from '../../utils/storage';
 import {AUTH_STORAGE_KEY} from '../../utils/constants';
+import {useAuth} from '../../providers/Auth';
+import ServiceLogin from '../../mockLogin/Login.api';
 
 function MenuProfile(props) {
   const classes = useStyles();
   const isLogin = storage.get(AUTH_STORAGE_KEY);
+  const { logout, login } = useAuth();
   const [userValue, setUserValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
+  const [errorMessage, setErrorMessage]= useState('');
 
 
   const handleUser = (e) => {
@@ -26,13 +30,33 @@ function MenuProfile(props) {
   const handlePassword = (e) => {
     setPasswordValue(e.target.value);
   }
-  const submitForm = () => {
-    props.handleLogin(userValue, passwordValue);
-}
+
+  const handleLogin = (username, password) => {
+    ServiceLogin(username, password).then(((resp) => {
+      setTimeout(() => {
+        props.handleClose();
+        setErrorMessage('');
+      }, 0);
+      login(resp);
+    })).catch((e) => {
+        setErrorMessage(e.message);
+    });
+  }
+
+  const handleCloseModal = () => {
+    props.handleClose()
+    setErrorMessage('');
+  }
+
+  const handleLogout = (event) => {
+    props.closeBtn(event);
+    logout();
+  }
 
   const loginBody = (
     <div className={classes.paper}>
-    <h1>Login</h1>
+    {/* <h1>Login</h1> */}
+    {errorMessage.length > 0 ? (<div style={{background: 'tomato'}}><h3 style={{display: 'flex', justifyContent:'center', color: 'white'}}>{errorMessage}</h3></div>) : (<><h1>Login</h1></>)}
       <form >
           <Grid container spacing={3}>
             <Grid item xs={6}>
@@ -48,8 +72,8 @@ function MenuProfile(props) {
             <Grid item xs={6}>
             </Grid>
             <Grid item xs={6}>
-              <Button onClick={props.handleClose}>Cancel</Button>
-              <Button onClick={submitForm} color="primary">Login</Button>
+              <Button onClick={handleCloseModal}>Cancel</Button>
+              <Button onClick={() => {handleLogin(userValue, passwordValue)}} color="primary">Login</Button>
             </Grid>
           </Grid>
       </form>
@@ -86,13 +110,13 @@ function MenuProfile(props) {
             {isLogin !== true ? (
               <>
               <MenuItem 
-                onClick={props.closeBtn}
+                onClick={(event) => {props.closeBtn(event)}}
                 >
                 Login
               </MenuItem>
               <Modal
                 open={props.openModal}
-                onClose={props.handleClose}
+                onClose={handleCloseModal}
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
               >
@@ -102,7 +126,7 @@ function MenuProfile(props) {
             ): (
               <>
               <MenuItem 
-                onClick={props.handleLogout}
+                onClick={(event) => {handleLogout(event)}}
                 >
                 Logout
               </MenuItem>

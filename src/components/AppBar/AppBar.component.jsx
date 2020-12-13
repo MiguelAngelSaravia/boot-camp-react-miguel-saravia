@@ -16,16 +16,11 @@ import DrawerMenu from '../DrawerMenu';
 import { useStyles } from '../../utils/styles';
 import { AUTH_STORAGE_KEY, AUTH_STORAGE_PROFILE } from '../../utils/constants';
 import {storage} from '../../utils/storage';
-import {useAuth} from '../../providers/Auth';
-import ServiceLogin from '../../mockLogin/Login.api';
-
-
 
 function CustomAppBar(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-  const { logout, login } = useAuth();
 
   const [openDrawer, setOpenDrower] = useState({open: false})
   const [searchValue, setSearchValue] = useState({criteria: props.value})
@@ -56,9 +51,11 @@ function CustomAppBar(props) {
     }
   };
 
-  const handleMenuClose = () => {
+  const handleMenuClose = () => (event) => {
     setAnchorEl(null);
-    handleMobileMenuClose();
+    if(event.target.tagName.toLowerCase() !== 'div') {
+      handleMobileMenuClose();
+    }
   };
 
   const handleMobileMenuOpen = (event) => {
@@ -80,21 +77,6 @@ function CustomAppBar(props) {
     setOpenModal(false);
   };
 
-  const handleLogout = () => {
-    handleMenuClose();
-    logout();
-  }
-  const handleLogin = (username, password) => {
-    ServiceLogin(username, password).then(((resp) => {
-      setTimeout(() => {
-        handleClose();
-      }, 0);
-      login(resp);
-  })).catch((e) => {
-      console.log('error del mockup', e);
-  });
-  }
-
   const searchCriteria = (event) => {
     if(event.type === 'keydown' && event.keyCode === 13) {
       props.onCriteria(event.target.value);
@@ -105,16 +87,16 @@ function CustomAppBar(props) {
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
-    <RenderMenu menuId={menuId} anchorEl={anchorEl} closeBtn = {handleMenuClose} 
-    openMenu = {isMenuOpen} openModal={openModal} handleClose={handleClose} 
-    handleLogout={handleLogout} handleLogin={handleLogin}
-
+    <RenderMenu menuId={menuId} anchorEl={anchorEl} closeBtn = {handleMenuClose()} 
+    openMenu = {isMenuOpen} openModal={openModal} handleClose={handleClose}
     />
   );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
-    <RenderMenu menuId={mobileMenuId} anchorEl={mobileMoreAnchorEl} closeBtn={handleMobileMenuClose} openMenu={isMobileMenuOpen} handleClick={handleProfileMenuOpen} handleLogout={handleLogout} />
+    <RenderMenu menuId={mobileMenuId} anchorEl={mobileMoreAnchorEl} 
+    closeBtn={handleMobileMenuClose} openMenu={isMobileMenuOpen} handleClick={handleProfileMenuOpen} 
+    />
   );
 
   return (
