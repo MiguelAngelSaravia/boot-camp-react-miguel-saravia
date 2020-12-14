@@ -4,24 +4,18 @@ import { shallow ,configure } from 'enzyme';
 
 configure({adapter: new Adapter()});
 
-import CustomCard from './';
+import App from './';
 import AuthProvider from '../../providers/Auth';
 
-describe('CustomCard', () => {
+describe('App', () => {
     const wrapper = shallow(
         <AuthProvider>
-          <CustomCard
-            list={jest.fn()}
-            youtubeList={jest.fn()}
+          <App
           />
         </AuthProvider>
       );
     
-      it('Renders CustomCard', () => {
+      it('Renders App', () => {
         expect(wrapper.exists()).toBe(true)
-      });
-
-      it('match snapshot CustomCard', () => {
-        expect(wrapper.find('.Card')).toMatchSnapshot();
       });
 });
