@@ -1,21 +1,22 @@
 import React from 'react';
-import Adapter from 'enzyme-adapter-react-16';
-import { shallow ,configure } from 'enzyme';
-
-configure({adapter: new Adapter()});
-
+import {shallow} from '../../enzyme'
 import App from './';
 import AuthProvider from '../../providers/Auth';
 
 describe('App', () => {
     const wrapper = shallow(
         <AuthProvider>
-          <App
-          />
+          <App/>
         </AuthProvider>
       );
     
       it('Renders App', () => {
         expect(wrapper.exists()).toBe(true)
+      });
+      it("Find Component", () => {
+        expect(wrapper.find('App').length).toBe(1);
+      });
+      it("Snapshot Component", () => {
+        expect(wrapper.find('App').length).toMatchSnapshot();
       });
 });

@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CustomAppBar match snapshot CustomAppBar 1`] = `ShallowWrapper {}`;

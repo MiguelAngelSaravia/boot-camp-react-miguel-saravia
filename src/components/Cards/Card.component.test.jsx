@@ -1,8 +1,5 @@
 import React from 'react';
-import Adapter from 'enzyme-adapter-react-16';
-import { shallow ,configure } from 'enzyme';
-
-configure({adapter: new Adapter()});
+import {shallow} from '../../enzyme';
 
 import CustomCard from './';
 import AuthProvider from '../../providers/Auth';
@@ -22,6 +19,10 @@ describe('CustomCard', () => {
       });
 
       it('match snapshot CustomCard', () => {
-        expect(wrapper.find('.Card')).toMatchSnapshot();
+        expect(wrapper.find('CustomCard')).toMatchSnapshot();
+      });
+
+      it('Return Component', () => {
+        expect(wrapper.find('CustomCard').length).toBe(1);
       });
 });
